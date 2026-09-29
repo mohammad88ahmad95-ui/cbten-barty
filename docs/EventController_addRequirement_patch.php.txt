@@ -1,0 +1,13 @@
+أضف هذه الدالة داخل EventController (الدفعة 8 — الملف الأصلي غير موجود عندي):
+
+/** POST /events/{event}/requirements */
+public function addRequirement(Request $req, Event $event) {
+    abort_unless($event->customer_id === $req->user()->id, 403);
+    $data = $req->validate([
+        'category_id' => 'nullable|uuid|exists:categories,id',
+        'title_i18n' => 'required|array', 'title_i18n.ar' => 'required|string|max:150',
+    ]);
+    $r = $event->requirements()->create($data + ['status' => 'NOT_STARTED',
+        'sort_order' => $event->requirements()->count()]);
+    return response()->json(['data' => ['id' => $r->id]], 201);
+}

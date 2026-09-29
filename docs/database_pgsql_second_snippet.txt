@@ -1,0 +1,12 @@
+أضف هذا الاتصال داخل مصفوفة 'connections' في backend/config/database.php
+(هذا مقتطف وليس ملفاً كاملاً — لا تستبدل الملف به):
+
+'pgsql_second' => [
+    'driver' => 'pgsql',
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => env('DB_PORT', '5432'),
+    'database' => env('DB_DATABASE', 'captain'),
+    'username' => env('DB_USERNAME', 'captain'),
+    'password' => env('DB_PASSWORD', ''),
+    'charset' => 'utf8', 'prefix' => '', 'search_path' => 'public', 'sslmode' => 'prefer',
+],
