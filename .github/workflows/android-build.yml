@@ -1,0 +1,22 @@
+name: Build Android APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: mobile } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '3.24.0', channel: stable }
+      - run: flutter create . --platforms android --org com.captainparty --project-name captain_party
+      - run: flutter pub get
+      - run: flutter gen-l10n
+      - run: flutter build apk --release --dart-define=API_BASE_URL=${{ secrets.API_BASE_URL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: captain-party-apk
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
